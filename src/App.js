@@ -10,13 +10,11 @@ import './scss/app.scss';
 function App() {
   const [items, setItems] = React.useState([]);
 
-  fetch('https://6465cabb9c09d77a62f404da.mockapi.io/items')
-    .then((res) => {
-      return res.json();
-    })
-    .then((json) => {
-      setItems(json);
-    });
+  React.useEffect(() => {
+    fetch('https://6465cabb9c09d77a62f404da.mockapi.io/items')
+      .then((res) => res.json())
+      .then((arr) => setItems(arr));
+  }, []);
 
   return (
     <div className="wrapper">
