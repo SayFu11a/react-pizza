@@ -10,11 +10,15 @@ import './scss/app.scss';
 
 function App() {
   const [items, setItems] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
     fetch('https://6465cabb9c09d77a62f404da.mockapi.io/items')
       .then((res) => res.json())
-      .then((arr) => setItems(arr));
+      .then((arr) => {
+        setItems(arr);
+        setIsLoading(false);
+      });
   }, []);
 
   return (
@@ -28,9 +32,9 @@ function App() {
           </div>
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
-            {items.map((pizza) => (
-              <PizzaBlock key={pizza.id} {...pizza} />
-            ))}
+            {isLoading
+              ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
+              : items.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)}
           </div>
         </div>
       </div>
