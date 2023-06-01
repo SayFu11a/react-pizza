@@ -9,6 +9,8 @@ import Cart from './pages/Cart';
 import './scss/app.scss';
 
 function App() {
+  console.log("Тест компонента корзины", <Cart />)
+
   return (
     <div className="wrapper">
       <Header />
