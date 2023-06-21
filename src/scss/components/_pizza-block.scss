@@ -5,12 +5,39 @@
   text-align: center;
   margin-bottom: 65px;
 
-  &:not(:nth-of-type(4n)) {
-    margin-right: 35px;
+  @media (max-width:1060px){
+    width: 99%;
+  }
+
+
+  &-wrapper{
+    display: flex;
+    justify-content: center;
   }
 
   &__image {
     width: 260px;
+    @media (max-width:1060px){
+      width: 80%;
+      position: relative;
+      left: 9px;
+    }
+
+    @media (max-width: 848px){
+      width: 100%;
+    }
+
+    @media (max-width: 730px){
+      width: 70%;
+    }
+    
+    @media (max-width: 512px){
+      width: 90%;
+    }
+    
+    @media (max-width: 356px){
+      width: 100%;
+    }
   }
 
   &__title {

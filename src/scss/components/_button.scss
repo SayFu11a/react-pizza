@@ -135,6 +135,10 @@
     line-height: 23px;
     padding: 12px 25px;
 
+    @media (max-width: 572px){
+      padding: 12px 20px; 
+    }
+
     svg {
       margin-right: 8px;
       margin-bottom: 1px;
@@ -143,6 +147,9 @@
     span {
       font-weight: 600;
       font-size: 16px;
+      @media (max-width: 572px){
+        font-size: 15px;
+      }
     }
   }
 }
