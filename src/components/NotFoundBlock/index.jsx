@@ -1,7 +1,5 @@
 import styles from './NotFoundBlock.module.scss';
 
-console.log(styles.root);
-
 const NotFoundBlock = () => {
   return (
     <div className={styles.root}>
