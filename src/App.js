@@ -8,20 +8,23 @@ import Cart from './pages/Cart';
 
 import './scss/app.scss';
 
+export const AppContext = React.createContext();
+
 function App() {
   const [searchValue, setSearchValue] = React.useState('');
-  console.log(searchValue);
 
   return (
     <div className="wrapper">
-      <Header searchValue={searchValue} setSearchValue={setSearchValue} />
-      <div className="content">
-        <Routes>
-          <Route path="/" element={<Home searchValue={searchValue} />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </div>
+      <AppContext.Provider value={{ searchValue, setSearchValue }}>
+        <Header />
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+      </AppContext.Provider>
     </div>
   );
 }
