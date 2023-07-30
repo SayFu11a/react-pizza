@@ -14,13 +14,29 @@ export const list = [
 function Sort() {
    const dispatch = useDispatch(); // получаем функцию котораая будет передавать нам в редакс действие.
    const sort = useSelector((state) => state.filter.sort); // вытаскиваем из store.js объект sort
+   const sortRef = React.useRef(); // ссылка на sort dom элемент
 
    const [open, setOpen] = React.useState(false);
-
    const rotate = { transform: 'rotate(180deg)' };
 
+   // эта тема зарывает попап сорта при клике на другое место на боди
+   React.useEffect(() => {
+      const clickOnPopap = (event) => {
+         // event.composedPath() - показывает на какой элемент кликнули
+         if (!event.composedPath().includes(sortRef.current)) {
+            setOpen(false);
+            console.log('снаружи клик');
+         }
+      };
+
+      document.body.addEventListener('click', clickOnPopap);
+
+      // это типа componentWillUnmount(). вызывается перед удалением компонента чтобы удалить лисенер, так как если не удалить его то он множится когда компонент удаляется когда мы переходим на другой компоннет, страрый компоенент удаляется а вот лисенер остается, и вот тут внизу мы решаем проблему с лисенером просто удаляем его когда компоннет удаляется.
+      return () => document.body.removeEventListener('click', clickOnPopap);
+   }, []);
+
    return (
-      <div className="sort">
+      <div ref={sortRef} className="sort">
          <div className="sort__label">
             <svg
                style={open ? {} : rotate}
