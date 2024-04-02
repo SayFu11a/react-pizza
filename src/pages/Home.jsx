@@ -32,15 +32,17 @@ const Home = () => {
       dispatch(setCurrentPage(namber));
    };
 
-   const axiosPizzas = () => {
+   const axiosPizzas = async () => {
       setIsLoading(true);
 
+      const sortBy = sort.sortProperty.replace('-', '');
+      const order = sort.sortProperty.includes('-') ? 'abc' : 'desc';
       const category = categoryId > 0 ? `category=${categoryId}` : '';
       const search = searchValue ? `&search=${searchValue}` : '';
 
-      axios
+      await axios
          .get(
-            `https://6465cabb9c09d77a62f404da.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sort.sortProperty}${search}`,
+            `https://6465cabb9c09d77a62f404da.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`,
          )
          .then((res) => {
             setItems(res.data);
