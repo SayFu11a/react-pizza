@@ -1,6 +1,6 @@
 import React from 'react';
 import qs from 'qs';
-import axios from 'axios';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'; // чтобы сшить строку queryString в адрес
 
@@ -11,6 +11,7 @@ import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 import { AppContext } from '../App';
+import { fetchPizzas } from '../redux/slices/pizzaSlice';
 
 const Home = () => {
    const navigate = useNavigate(); // Говорим дай нам функцию из своего хука
@@ -18,11 +19,10 @@ const Home = () => {
    const isSearch = React.useRef(false); // поиска пока нету по умполчанию ничего нету
    const isMounted = React.useRef(false);
 
+   const { items, status } = useSelector((state) => state.pizza);
    const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
 
    const { searchValue } = React.useContext(AppContext);
-   const [items, setItems] = React.useState([]);
-   const [isLoading, setIsLoading] = React.useState(true);
 
    const onClickCatigory = (id) => {
       dispatch(setCategoryId(id));
@@ -32,22 +32,21 @@ const Home = () => {
       dispatch(setCurrentPage(namber));
    };
 
-   const axiosPizzas = async () => {
-      setIsLoading(true);
-
+   const getPizzas = async () => {
       const sortBy = sort.sortProperty.replace('-', '');
       const order = sort.sortProperty.includes('-') ? 'abc' : 'desc';
       const category = categoryId > 0 ? `category=${categoryId}` : '';
       const search = searchValue ? `&search=${searchValue}` : '';
 
-      await axios
-         .get(
-            `https://6465cabb9c09d77a62f404da.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`,
-         )
-         .then((res) => {
-            setItems(res.data);
-            setIsLoading(false);
-         });
+      dispatch(
+         fetchPizzas({
+            sortBy,
+            order,
+            category,
+            search,
+            currentPage,
+         }),
+      );
 
       window.scrollTo(0, 0);
    };
@@ -81,17 +80,17 @@ const Home = () => {
                sort,
             }),
          );
-         isSearch.current = true; // если пришли параметры из URL то не вызывай axiosPizzas и не делай рендер по умолчанию, в коде ниже будет написанно.  если dispatch не был произведен на изменение setFilltersUrl то тут будет false - это значит что мы можем сделать запрос по-умолчанию, то есть запрос с параметрами которые вшиты изначально в редаксе.
+         isSearch.current = true; // если пришли параметры из URL то не вызывай getPizzas и не делай рендер по умолчанию, в коде ниже будет написанно.  если dispatch не был произведен на изменение setFilltersUrl то тут будет false - это значит что мы можем сделать запрос по-умолчанию, то есть запрос с параметрами которые вшиты изначально в редаксе.
       }
    }, []);
 
    // если был первый рендер то запрашиваем пиццы
    React.useEffect(() => {
       // если нету поска по квери парамтрам то мы делаем axios запрос
-      if (!isSearch.current) {
-         axiosPizzas();
-      }
-      isSearch.current = false; // когда поняли что вверу ничего нету передаем фалсе
+      // if (!isSearch.current) {
+      getPizzas();
+      // }
+      // isSearch.current = false; // когда поняли что вверу ничего нету передаем фалсе
    }, [sort.sortProperty, categoryId, searchValue, currentPage]);
 
    const pizzas = items.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />);
@@ -104,7 +103,17 @@ const Home = () => {
             <Sort />
          </div>
          <h2 className="content__title">Все пиццы</h2>
-         <div className="content__items">{isLoading ? skeletons : pizzas}</div>
+         {status === 'error' ? (
+            <div class="cart--empty">
+               <h2>
+                  Произошла ошибка <icon>😕</icon>
+               </h2>
+               <p>Не удалось получить питсы. Повторите попытку позже.</p>
+            </div>
+         ) : (
+            <div className="content__items">{status === 'loading' ? skeletons : pizzas}</div>
+         )}
+
          <Pagination currentPage={currentPage} onChangePage={onChangePage} />
       </div>
    );

@@ -68,3 +68,45 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+git remote -v
+
+git remote remove origin
+
+git remote add origin
+
+git remote add origin
+
+подключение новый локальный проект к гитхаб репазиторию
+
+git init
+
+git add .
+
+git commit -m "Add file img"
+
+git push -u origin master
+
+// если будет ошибка после обновления редакс туллкит в пицца слайс. использовать этот код
+// extraReducers: (builder) => {
+// builder
+// .addCase(fetchPizzas.pending, (state) => {
+// state.status = "loading"
+// state.items = []
+// })
+// .addCase(fetchPizzas.fulfilled, (state, action) => {
+// state.items = action.payload
+// state.status = "success"
+// })
+// .addCase(fetchPizzas.rejected, (state) => {
+// state.status = "error"
+// state.items = []
+// })
+// }
+
+// или этот
+
+// extraReducers: (builder) => {
+// builder.addCase(fetchProducts.fulfilled, (state, action) => {
+// state.products = action.payload;
+// });
