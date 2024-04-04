@@ -87,7 +87,7 @@ git init
 
 git add .
 
-git commit -m "18 Add redux pizzaSlice"
+git commit -m "18 noting"
 
 git push -u origin master
 
