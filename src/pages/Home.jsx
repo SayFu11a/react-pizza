@@ -4,14 +4,19 @@ import qs from 'qs';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'; // чтобы сшить строку queryString в адрес
 
-import { setCategoryId, setCurrentPage, setFilltersUrl } from '../redux/slices/filterSlice';
+import {
+   selectFilter,
+   setCategoryId,
+   setCurrentPage,
+   setFilltersUrl,
+} from '../redux/slices/filterSlice';
 import Categories from '../components/Categories';
 import Sort, { list } from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 import { AppContext } from '../App';
-import { fetchPizzas } from '../redux/slices/pizzaSlice';
+import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice';
 
 const Home = () => {
    const navigate = useNavigate(); // Говорим дай нам функцию из своего хука
@@ -19,10 +24,8 @@ const Home = () => {
    const isSearch = React.useRef(false); // поиска пока нету по умполчанию ничего нету
    const isMounted = React.useRef(false);
 
-   const { items, status } = useSelector((state) => state.pizza);
-   const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
-
-   const { searchValue } = React.useContext(AppContext);
+   const { items, status } = useSelector(selectPizzaData);
+   const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
 
    const onClickCatigory = (id) => {
       dispatch(setCategoryId(id));

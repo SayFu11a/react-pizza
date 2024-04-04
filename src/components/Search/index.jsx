@@ -1,12 +1,13 @@
 import React from 'react';
-import { AppContext } from '../../App';
+import { setSearchValue } from '../../redux/slices/filterSlice';
 import debounce from 'lodash.debounce';
 
 import styles from './Search.module.scss';
+import { useDispatch } from 'react-redux';
 
 const Search = () => {
+   const dispatch = useDispatch();
    const [value, setValue] = React.useState(''); // локально хранит searchValue (внутри компонета Search) этот стйест отчевает за быстрое отображение данных из инпута
-   const { setSearchValue } = React.useContext(AppContext); // этот стейт отвечает за то чтобы сделать поиск.
    const inputRef = React.useRef(); // добавляем useRef
 
    const updateSerchValue = React.useCallback(
@@ -16,14 +17,14 @@ const Search = () => {
       // и наш бэкэнд из-за большого колличества запросов может нас забанить
       debounce((str) => {
          // сделали функцию setSearchValue отложенной с пмомшью debounce
-         setSearchValue(str);
+         dispatch(setSearchValue(str));
       }, 500), //отложенной на 500мс
       [],
    );
 
    const clearAndFocusInput = () => {
       // создаем функцию для очистки и фокусировки инпута
-      setSearchValue(''); // делаем очитку в контексте
+      dispatch(setSearchValue('')); // делаем очитку в контексте
       setValue(''); // делаем очитку локально
       // document.querySelector('input').focus(); // неправильный способ
       inputRef.current.focus(); // правильный способ для фокусироки инпута

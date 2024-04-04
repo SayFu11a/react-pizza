@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux'; // импортируем из библеотеки react-redux useSelector, useDispatch
-import { setTypeSort } from '../redux/slices/filterSlice';
+import { selectSort, setTypeSort } from '../redux/slices/filterSlice';
 
 export const list = [
    { name: 'популярности (DESC)', sortProperty: 'rating' },
@@ -13,7 +13,7 @@ export const list = [
 
 function Sort() {
    const dispatch = useDispatch(); // получаем функцию котораая будет передавать нам в редакс действие.
-   const sort = useSelector((state) => state.filter.sort); // вытаскиваем из store.js объект sort
+   const sort = useSelector(selectSort); // вытаскиваем из store.js объект sort
    const sortRef = React.useRef(); // ссылка на sort dom элемент
 
    const [open, setOpen] = React.useState(false);

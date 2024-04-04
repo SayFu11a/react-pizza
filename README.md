@@ -69,6 +69,10 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
+npm run start
+
+---
+
 git remote -v
 
 git remote remove origin
@@ -83,7 +87,7 @@ git init
 
 git add .
 
-git commit -m "Add file img"
+git commit -m "18 Add redux pizzaSlice"
 
 git push -u origin master
 
