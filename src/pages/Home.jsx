@@ -2,7 +2,7 @@ import React from 'react';
 import qs from 'qs';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom'; // чтобы сшить строку queryString в адрес
+import { Link, useNavigate } from 'react-router-dom'; // чтобы сшить строку queryString в адрес
 
 import {
    selectFilter,
@@ -96,7 +96,11 @@ const Home = () => {
       // isSearch.current = false; // когда поняли что вверу ничего нету передаем фалсе
    }, [sort.sortProperty, categoryId, searchValue, currentPage]);
 
-   const pizzas = items.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />);
+   const pizzas = items.map((pizza) => (
+      <Link key={pizza.id} to={`/pizza/${pizza.id}`}>
+         <PizzaBlock {...pizza} />{' '}
+      </Link>
+   ));
    const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 
    return (
