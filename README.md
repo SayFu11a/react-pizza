@@ -87,7 +87,7 @@ git init
 
 git add .
 
-git commit -m "18 noting"
+git commit -m "19 useParams, useLocation, Outlet"
 
 git push -u origin master
 
