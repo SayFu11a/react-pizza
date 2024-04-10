@@ -5,7 +5,9 @@ import { addItem, selectCartItemById } from '../../redux/slices/cartSlice';
 
 const typeNames = ['тонкое', 'традиционное'];
 
-function PizzaBlock({ title, price, id, imageUrl, types, sizes, category, rating }) {
+type PizzaBlockProps = { title: string, price:string, id:string, imageUrl:string, types:number[], sizes:number[], category:number, rating:number, }
+
+const PizzaBlock: React.FC<PizzaBlockProps> = ({ title, price, id, imageUrl, types, sizes }) => {
    const dispatch = useDispatch();
    const cartItem = useSelector(selectCartItemById(id)); // в массиве будем искать похожий id и если он нашелся мы вытаскивеем count и его рендерим
    const [activeType, setActiveType] = React.useState(0);

@@ -2,7 +2,12 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux'; // импортируем из библеотеки react-redux useSelector, useDispatch
 import { selectSort, setTypeSort } from '../redux/slices/filterSlice';
 
-export const list = [
+type SortItem = {
+   name: string;
+   sortProperty: string;
+}
+
+export const list: SortItem[] = [
    { name: 'популярности (DESC)', sortProperty: 'rating' },
    { name: 'популярности (ASC)', sortProperty: '-rating' },
    { name: 'цене (DESC)', sortProperty: 'price' },
@@ -14,14 +19,19 @@ export const list = [
 function Sort() {
    const dispatch = useDispatch(); // получаем функцию котораая будет передавать нам в редакс действие.
    const sort = useSelector(selectSort); // вытаскиваем из store.js объект sort
-   const sortRef = React.useRef(); // ссылка на sort dom элемент
+   const sortRef = React.useRef<HTMLDivElement>(null); // ссылка на sort dom элемент
 
    const [open, setOpen] = React.useState(false);
    const rotate = { transform: 'rotate(180deg)' };
 
+   const onClicListItem = (obj: SortItem) => {
+      dispatch(setTypeSort(obj));
+      setOpen(!open);
+   }
+
    // эта тема зарывает попап сорта при клике на другое место на боди
    React.useEffect(() => {
-      const clickOnPopap = (event) => {
+      const clickOnPopap = (event: any) => {
          // event.composedPath() - показывает на какой элемент кликнули
          if (!event.composedPath().includes(sortRef.current)) {
             setOpen(false);
@@ -60,10 +70,7 @@ function Sort() {
                      <li
                         key={index}
                         className={sort.sortProperty === obj.sortProperty ? 'active' : ''}
-                        onClick={() => {
-                           dispatch(setTypeSort(obj));
-                           setOpen(!open);
-                        }}>
+                        onClick={() => onClicListItem(obj)}>
                         {obj.name}
                      </li>
                   ))}

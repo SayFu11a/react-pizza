@@ -17,7 +17,7 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice';
 
-const Home = () => {
+const Home: React.FC = () => {
    const navigate = useNavigate(); // Говорим дай нам функцию из своего хука
    const dispatch = useDispatch();
    const isSearch = React.useRef(false); // поиска пока нету по умполчанию ничего нету
@@ -26,12 +26,12 @@ const Home = () => {
    const { items, status } = useSelector(selectPizzaData);
    const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
 
-   const onClickCatigory = (id) => {
-      dispatch(setCategoryId(id));
+   const onClickCatigory = (i: number) => {
+      dispatch(setCategoryId(i));
    };
 
-   const onChangePage = (namber) => {
-      dispatch(setCurrentPage(namber));
+   const onChangePage = (value: number) => {
+      dispatch(setCurrentPage(value));
    };
 
    const getPizzas = async () => {
@@ -41,6 +41,7 @@ const Home = () => {
       const search = searchValue ? `&search=${searchValue}` : '';
 
       dispatch(
+         // @ts-ignore
          fetchPizzas({
             sortBy,
             order,
@@ -95,7 +96,7 @@ const Home = () => {
       // isSearch.current = false; // когда поняли что вверу ничего нету передаем фалсе
    }, [sort.sortProperty, categoryId, searchValue, currentPage]);
 
-   const pizzas = items.map((pizza) => (
+   const pizzas = items.map((pizza: any) => (
       <Link key={pizza.id} to={`/pizza/${pizza.id}`}>
          <PizzaBlock {...pizza} />{' '}
       </Link>
@@ -110,9 +111,9 @@ const Home = () => {
          </div>
          <h2 className="content__title">Все пиццы</h2>
          {status === 'error' ? (
-            <div class="cart--empty">
+            <div className="cart--empty">
                <h2>
-                  Произошла ошибка <icon>😕</icon>
+                  Произошла ошибка <span>😕</span>
                </h2>
                <p>Не удалось получить питсы. Повторите попытку позже.</p>
             </div>

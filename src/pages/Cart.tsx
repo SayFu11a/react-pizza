@@ -6,11 +6,11 @@ import CartEmty from '../components/CartEmty';
 
 import { clearItem, selectCart } from '../redux/slices/cartSlice';
 
-const Cart = () => {
+const Cart: React.FC = () => {
    const dispatch = useDispatch();
    const { totalPrice, items } = useSelector(selectCart); // дай нам все пиццы
 
-   const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+   const totalCount = items.reduce((sum: number, item: any) => sum + item.count, 0);
 
    const onClickClear = () => {
       if (window.confirm('Очистить всю корзину?')) {
@@ -91,7 +91,7 @@ const Cart = () => {
                </div>
             </div>
             <div className="content__items cart__items">
-               {items.map((item) => (
+               {items.map((item: any) => (
                   <CartItem key={item.id} {...item} /> // рендерид пиццы в корзине
                ))}
             </div>

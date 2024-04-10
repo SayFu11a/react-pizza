@@ -5,17 +5,17 @@ import debounce from 'lodash.debounce';
 import styles from './Search.module.scss';
 import { useDispatch } from 'react-redux';
 
-const Search = () => {
+const Search: React.FC = () => {
    const dispatch = useDispatch();
    const [value, setValue] = React.useState(''); // локально хранит searchValue (внутри компонета Search) этот стйест отчевает за быстрое отображение данных из инпута
-   const inputRef = React.useRef(); // добавляем useRef
+   const inputRef = React.useRef<HTMLInputElement>(null); // добавляем useRef
 
    const updateSerchValue = React.useCallback(
       // - сохранили ссылку на функцию (сохраниили внутри updateSerchValue) с помошью useCallback,
       // - если бы не useCallback то функция пересоздовалась бы.
       // - то есть каждый раз при изменении инпута происходил бы запрос к серверу моментально
       // и наш бэкэнд из-за большого колличества запросов может нас забанить
-      debounce((str) => {
+      debounce((str: string) => {
          // сделали функцию setSearchValue отложенной с пмомшью debounce
          dispatch(setSearchValue(str));
       }, 500), //отложенной на 500мс
@@ -27,10 +27,10 @@ const Search = () => {
       dispatch(setSearchValue('')); // делаем очитку в контексте
       setValue(''); // делаем очитку локально
       // document.querySelector('input').focus(); // неправильный способ
-      inputRef.current.focus(); // правильный способ для фокусироки инпута
+      inputRef.current?.focus(); // правильный способ для фокусироки инпута
    };
 
-   const onChangeInput = (event) => {
+   const onChangeInput = (event: any) => {
       // onChangeInput вызывается каждый раз когда менятеся ввод (target.value) внутри input
       setValue(event.target.value); // это у нас моментально сохраниться
       updateSerchValue(event.target.value);

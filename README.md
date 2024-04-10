@@ -87,7 +87,7 @@ git init
 
 git add .
 
-git commit -m "19 useParams, useLocation, Outlet"
+git commit -m "21 TypeScript app index fullfizza"
 
 git push -u origin master
 
