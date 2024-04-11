@@ -30,7 +30,7 @@ const Search: React.FC = () => {
       inputRef.current?.focus(); // правильный способ для фокусироки инпута
    };
 
-   const onChangeInput = (event: any) => {
+   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
       // onChangeInput вызывается каждый раз когда менятеся ввод (target.value) внутри input
       setValue(event.target.value); // это у нас моментально сохраниться
       updateSerchValue(event.target.value);

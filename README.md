@@ -87,7 +87,7 @@ git init
 
 git add .
 
-git commit -m "21 TypeScript app index fullfizza"
+git commit -m "22 TypeScript prop"
 
 git push -u origin master
 

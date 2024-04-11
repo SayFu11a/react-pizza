@@ -31,11 +31,11 @@ function Sort() {
 
    // эта тема зарывает попап сорта при клике на другое место на боди
    React.useEffect(() => {
-      const clickOnPopap = (event: any) => {
+      const clickOnPopap = (event: MouseEvent) => {
          // event.composedPath() - показывает на какой элемент кликнули
-         if (!event.composedPath().includes(sortRef.current)) {
+         if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
             setOpen(false);
-            console.log('снаружи клик');
+            // console.log('снаружи клик');
          }
       };
 
