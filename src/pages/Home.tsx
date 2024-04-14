@@ -27,9 +27,9 @@ const Home: React.FC = () => {
    const { items, status } = useSelector(selectPizzaData);
    const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
 
-   const onClickCatigory = (i: number) => {
+   const onClickCatigory = React.useCallback((i: number) => {
       dispatch(setCategoryId(i));
-   };
+   }, []);
 
    const onChangePage = (value: number) => {
       dispatch(setCurrentPage(value));
@@ -99,14 +99,14 @@ const Home: React.FC = () => {
       // isSearch.current = false; // когда поняли что вверу ничего нету передаем фалсе
    }, [sort.sortProperty, categoryId, searchValue, currentPage]);
 
-   const pizzas = items.map((pizza: any) => (<PizzaBlock {...pizza} />));
+   const pizzas = items.map((pizza: any) => (<PizzaBlock key={pizza.id} {...pizza} />));
    const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 
    return (
       <div className="container">
          <div className="content__top">
             <Categories value={categoryId} onClickCatigory={onClickCatigory} />
-            <Sort />
+            <Sort value={sort} />
          </div>
          <h2 className="content__title">Все пиццы</h2>
          {status === 'error' ? (

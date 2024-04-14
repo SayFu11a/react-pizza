@@ -89,7 +89,7 @@ npm run start
 
 git add .
 
-git commit -m "23 rerite to TypeScript onClick, onChange, Event"
+git commit -m "24 Redux Toolkit TS, некоторое упрощенное оставил, возможны проблемы с параметрами"
 
 git push -u origin master
 
