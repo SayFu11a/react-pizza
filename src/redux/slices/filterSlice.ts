@@ -1,6 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../store';
 
-const initialState = {
+export type Sort = {
+   name: string,
+   sortProperty: string, // 'rating' | 'price'| 'title' | '-rating' | '-price'| '-title'
+}
+
+interface FilterSliceSatate {
+   searchValue: string,
+   categoryId: number,
+   currentPage: number,
+   sort: Sort,
+}
+
+const initialState: FilterSliceSatate = {
    searchValue: '',
    categoryId: 0,
    currentPage: 1,
@@ -14,19 +27,19 @@ const filterSlice = createSlice({
    name: 'filters',
    initialState,
    reducers: {
-      setCategoryId(state, action) {
+      setCategoryId(state, action: PayloadAction<number>) {
          state.categoryId = action.payload;
       },
-      setSearchValue(state, action) {
+      setSearchValue(state, action: PayloadAction<string>) {
          state.searchValue = action.payload;
       },
-      setTypeSort(state, action) {
+      setTypeSort(state, action: PayloadAction<Sort>) {
          state.sort = action.payload;
       },
-      setCurrentPage(state, action) {
+      setCurrentPage(state, action: PayloadAction<number>) {
          state.currentPage = action.payload;
       },
-      setFilltersUrl(state, action) {
+      setFilltersUrl(state, action: PayloadAction<FilterSliceSatate>) {
          // параметры которые мы будем передавть сюда,будут вшиваться в свойства.
          state.currentPage = Number(action.payload.currentPage); // когда придет currentPage ты должен вшить то что придет из payload
          state.sort = action.payload.sort;
@@ -35,8 +48,8 @@ const filterSlice = createSlice({
    },
 });
 
-export const selectFilter = (state) => state.filter;
-export const selectSort = (state) => state.filter.sort;
+export const selectFilter = (state: RootState) => state.filter;
+export const selectSort = (state: RootState) => state.filter.sort;
 
 export const { setCategoryId, setTypeSort, setCurrentPage, setFilltersUrl, setSearchValue } =
    filterSlice.actions;

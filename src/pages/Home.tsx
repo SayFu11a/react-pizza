@@ -1,10 +1,10 @@
 import React from 'react';
 import qs from 'qs';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom'; // чтобы сшить строку queryString в адрес
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom'; // чтобы сшить строку queryString в адрес
 
-import {
+import filterSlice, {
    selectFilter,
    setCategoryId,
    setCurrentPage,
@@ -16,10 +16,11 @@ import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice';
+import { useAppDispatch } from '../redux/store';
 
 const Home: React.FC = () => {
    const navigate = useNavigate(); // Говорим дай нам функцию из своего хука
-   const dispatch = useDispatch();
+   const dispatch = useAppDispatch();
    const isSearch = React.useRef(false); // поиска пока нету по умполчанию ничего нету
    const isMounted = React.useRef(false);
 
@@ -41,13 +42,12 @@ const Home: React.FC = () => {
       const search = searchValue ? `&search=${searchValue}` : '';
 
       dispatch(
-         // @ts-ignore
          fetchPizzas({
             sortBy,
             order,
             category,
             search,
-            currentPage,
+            currentPage: String(currentPage),
          }),
       );
 
@@ -79,8 +79,11 @@ const Home: React.FC = () => {
 
          dispatch(
             setFilltersUrl({
-               ...params, // мы указываем что нам необходимо передать все эти параметры.
-               sort,
+               ...params,
+                  sort: sort || list[0],
+                  searchValue: '',
+                  categoryId: 0,
+                  currentPage: 1,
             }),
          );
          isSearch.current = true; // если пришли параметры из URL то не вызывай getPizzas и не делай рендер по умолчанию, в коде ниже будет написанно.  если dispatch не был произведен на изменение setFilltersUrl то тут будет false - это значит что мы можем сделать запрос по-умолчанию, то есть запрос с параметрами которые вшиты изначально в редаксе.
@@ -96,11 +99,7 @@ const Home: React.FC = () => {
       // isSearch.current = false; // когда поняли что вверу ничего нету передаем фалсе
    }, [sort.sortProperty, categoryId, searchValue, currentPage]);
 
-   const pizzas = items.map((pizza: any) => (
-      <Link key={pizza.id} to={`/pizza/${pizza.id}`}>
-         <PizzaBlock {...pizza} />{' '}
-      </Link>
-   ));
+   const pizzas = items.map((pizza: any) => (<PizzaBlock {...pizza} />));
    const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 
    return (

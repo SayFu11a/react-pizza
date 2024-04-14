@@ -85,9 +85,11 @@ git remote add origin
 
 git init
 
+npm run start
+
 git add .
 
-git commit -m "22 TypeScript prop"
+git commit -m "23 rerite to TypeScript onClick, onChange, Event"
 
 git push -u origin master
 
