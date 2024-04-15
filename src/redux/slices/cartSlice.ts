@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { calcTotalPrice } from '../../utils/calcTotalPrice';
+import { getCartFromLocalStorage } from '../../utils/getCartFromLocalStorage';
 import { RootState } from '../store';
 
 export type CartItem = 
@@ -18,9 +20,11 @@ interface CartSliceState {
    items: CartItem[];
 }
 
+const {items, totalPrice} = getCartFromLocalStorage()
+
 const initialState: CartSliceState = {
-   totalPrice: 0,
-   items: [],
+   totalPrice,
+   items,
 };
 
 const cartSlice = createSlice({
@@ -45,9 +49,7 @@ const cartSlice = createSlice({
             });
          }
          // это логика вверху помогает не дублировать одинаковые пиццы, вместо этого если в корзину добавляются одинаковые пиццы, то у пицы этой увеличивается count
-         state.totalPrice = state.items.reduce((sum, obj) => {
-            return obj.price * obj.count + sum; // рассчет стоимости пицц в корзине,в переменную sum сохраняются все изменения на каждой итерации, затем умножаем на caunt так как он показывает сколько пиц такоого типа добавлено
-         }, 0);
+         state.totalPrice = calcTotalPrice(state.items)
       },
       removeItem(state, action: PayloadAction<string>) {
          state.items = state.items.filter((obj) => obj.id !== action.payload); // тут будем передавать id

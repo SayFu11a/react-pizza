@@ -89,7 +89,7 @@ npm run start
 
 git add .
 
-git commit -m "24 Redux Toolkit TS, некоторое упрощенное оставил, возможны проблемы с параметрами"
+git commit -m "25 fix ReRender, add useCallback and React.memo"
 
 git push -u origin master
 
